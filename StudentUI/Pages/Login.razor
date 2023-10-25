@@ -1,0 +1,156 @@
+﻿@page "/login"
+@inject HttpClient HttpClient
+@inject NavigationManager NavigationManager
+@inject IJSRuntime JSRuntime
+
+
+
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        font-family: Arial, Helvetica, sans-serif;
+    }
+
+    .btn-login {
+        padding: 10px 15px;
+        background-color: black;
+        color: white;
+        cursor: pointer;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        opacity: 1;
+    }
+
+    .hidebtnLogin {
+        opacity: 0;
+    }
+
+    .overlay {
+        width: 100%;
+        position: fixed;
+        top: 0%;
+        background: rgba(134, 143, 3, 0.5);
+        height: 100vh;
+        z-index: -1;
+        opacity: 0;
+        transition: 1s;
+    }
+
+    .showoverlay {
+        opacity: 1;
+        z-index: 1;
+    }
+
+    .loginForm {
+        width: 350px;
+        border-radius: 5px;
+        padding: 30px 20px;
+        background-color: white;
+        position: absolute;
+        transition: 2s;
+        left: 50%;
+        top: -50%;
+        z-index: 9;
+        box-shadow: 0px 0px 10px 3px #b2031b;
+        transform: translate(-50%, -50%);
+    }
+
+    .showloginForm {
+        top: 50%;
+        opacity: 1;
+    }
+
+    .loginForm input {
+        width: 100%;
+        height: 35px;
+        margin-bottom: 15px;
+    }
+
+    .loginForm button {
+        color: white;
+        padding: 10px 15px;
+        background-color: black;
+        cursor: pointer;
+    }
+
+    .loginForm span {
+        position: absolute;
+        right: 0px;
+        top: 0px;
+        width: 30px;
+        height: 30px;
+        border-radius: 0 5px 0 0;
+        background-color: green;
+        color: white;
+        line-height: 30px;
+        text-align: center;
+        cursor: pointer;
+    }
+
+    .login {
+        color: rgb(163, 27, 27);
+        font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+        text-align: center;
+    }
+
+    input:hover {
+    }
+</style>
+
+
+
+<div class="btn-login" @onclick="ShowModal">Login</div>
+
+<div class="overlay @overlayClass">
+    <div class="loginForm @loginFormClass">
+        <span @onclick="CloseModal">&times;</span>
+        <form>
+            <div>
+                <label for="username" class="login"><b>UserName:-</b></label>
+                <input type="text" id="username" @bind="username" />
+            </div>
+            <div>
+                <label for="password" class="login"><b>Password:-</b></label>
+                <input type="password" id="password" @bind="password" />
+            </div>
+            <button @onclick="CheckCredentials">Login</button>
+        </form>
+    </div>
+</div>
+
+@code {
+    private string username;
+    private string password;
+    private string overlayClass = "";
+    private string loginFormClass = "";
+
+    private void ShowModal()
+    {
+        overlayClass = "showoverlay";
+        loginFormClass = "showloginForm";
+    }
+
+    private void CloseModal()
+    {
+        overlayClass = "";
+        loginFormClass = "";
+    }
+
+    private void CheckCredentials()
+    {
+        if (username == "sahera" && password == "sahera123")
+        {
+            // Navigate to Home page on successful login
+            NavigationManager.NavigateTo("/home");
+        }
+        else
+        {
+            // Handle failed login (show error message, etc.)
+            // For now, displaying an alert for demonstration purposes
+            JSRuntime.InvokeAsync<object>("alert", new object[] { "Login Failed!!" });
+        }
+    }
+}

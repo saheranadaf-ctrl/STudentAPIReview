@@ -1,0 +1,85 @@
+is_global = true
+build_property.TargetFramework = net7.0
+build_property.TargetPlatformMinVersion = 
+build_property.UsingMicrosoftNETSdkWeb = 
+build_property.ProjectTypeGuids = 
+build_property.InvariantGlobalization = false
+build_property.PlatformNeutralAssembly = 
+build_property.EnforceExtendedAnalyzerRules = 
+build_property._SupportedPlatformList = browser
+build_property.RootNamespace = StudentUI
+build_property.RootNamespace = StudentUI
+build_property.ProjectDir = C:\Users\User\source\repos\StudentAPP\StudentUI\
+build_property.RazorLangVersion = 7.0
+build_property.SupportLocalizedComponentNames = 
+build_property.GenerateRazorMetadataSourceChecksumAttributes = 
+build_property.MSBuildProjectDirectory = C:\Users\User\source\repos\StudentAPP\StudentUI
+build_property._RazorSourceGeneratorDebug = 
+
+[C:/Users/User/source/repos/StudentAPP/StudentUI/App.razor]
+build_metadata.AdditionalFiles.TargetPath = QXBwLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/User/source/repos/StudentAPP/StudentUI/Pages/Export.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRXhwb3J0LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/User/source/repos/StudentAPP/StudentUI/Pages/Home.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSG9tZS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/User/source/repos/StudentAPP/StudentUI/Pages/ImportCSV.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSW1wb3J0Q1NWLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/User/source/repos/StudentAPP/StudentUI/Pages/Index.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSW5kZXgucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/User/source/repos/StudentAPP/StudentUI/Pages/Login.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTG9naW4ucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/User/source/repos/StudentAPP/StudentUI/Shared/SurveyPrompt.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXFN1cnZleVByb21wdC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/User/source/repos/StudentAPP/StudentUI/_Imports.razor]
+build_metadata.AdditionalFiles.TargetPath = X0ltcG9ydHMucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/User/source/repos/StudentAPP/StudentUI/Pages/Add.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRkLnJhem9y
+build_metadata.AdditionalFiles.CssScope = b-30lqvzvetu
+
+[C:/Users/User/source/repos/StudentAPP/StudentUI/Pages/Bin.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQmluLnJhem9y
+build_metadata.AdditionalFiles.CssScope = b-ur23hq1m0u
+
+[C:/Users/User/source/repos/StudentAPP/StudentUI/Pages/Delete.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRGVsZXRlLnJhem9y
+build_metadata.AdditionalFiles.CssScope = b-2o2ahkn23p
+
+[C:/Users/User/source/repos/StudentAPP/StudentUI/Pages/GetALL.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcR2V0QUxMLnJhem9y
+build_metadata.AdditionalFiles.CssScope = b-33o89zwwou
+
+[C:/Users/User/source/repos/StudentAPP/StudentUI/Pages/GetById.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcR2V0QnlJZC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = b-k2a817csl5
+
+[C:/Users/User/source/repos/StudentAPP/StudentUI/Pages/Truncate.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVHJ1bmNhdGUucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-279qc7gwh3
+
+[C:/Users/User/source/repos/StudentAPP/StudentUI/Pages/Update.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVXBkYXRlLnJhem9y
+build_metadata.AdditionalFiles.CssScope = b-3wrszxol4u
+
+[C:/Users/User/source/repos/StudentAPP/StudentUI/Shared/MainLayout.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXE1haW5MYXlvdXQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-bc3vvxft3m
+
+[C:/Users/User/source/repos/StudentAPP/StudentUI/Shared/NavMenu.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXE5hdk1lbnUucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-6e8iwkpotu

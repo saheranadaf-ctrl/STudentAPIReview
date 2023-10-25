@@ -1,0 +1,114 @@
+﻿@page "/getbyid"
+@inject HttpClient HttpClient
+@inject IJSRuntime JSRuntime
+@inject NavigationManager NavigationManager
+@using Microsoft.AspNetCore.Components.Web
+
+<h1>Get Student by ID</h1>
+
+<EditForm Model="@student" OnValidSubmit="GetStudent">
+    <div class="form-group">
+        <label for="studentId">Enter Student ID:</label>
+        <InputText id="StudentId" @bind-Value="student.Student_ID" placeholder="STDN00000" required pattern="^STDN\d{5}$" />
+        <ValidationMessage For="@(() => student.Student_ID)" />
+    </div>
+    <br>
+
+    <button type="submit" class="btn btn-primary">Get Student</button>
+    <button type="button" class="btn btn-secondary" @onclick="GoBack">Back</button>
+</EditForm>
+
+@* 
+<div class="popup @(successPopupVisible ? "open-popup" : "")" @ref="successPopup">
+    <h2 id="successMessage">@successMessage</h2>
+    <button type="button" @onclick="CloseSuccessPopup">Ok</button>
+</div> *@
+
+<!-- Modal for Failure -->
+<div class="popup @(failurePopupVisible ? "open-popup" : "")" @ref="failurePopup">
+    <h2 id="failureMessage">@failureMessage</h2>
+    <button type="button" @onclick="CloseFailurePopup">Ok</button>
+</div>
+
+<div id="studentDetails">
+    @if (fetchedStudent != null)
+    {
+        <h2>Student Details</h2>
+        <p><strong>Student ID:</strong> @fetchedStudent.Student_ID</p>
+        <p><strong>Gender:</strong> @fetchedStudent.Gender</p>
+        <p><strong>Nationality:</strong> @fetchedStudent.NationalIty</p>
+        <p><strong>Place of Birth:</strong> @fetchedStudent.PlaceofBirth</p>
+        <p><strong>Stage ID:</strong> @fetchedStudent.StageId</p>
+        <p><strong>Grade ID:</strong> @fetchedStudent.GradeId</p>
+        <p><strong>Section ID:</strong> @fetchedStudent.SectionId</p>
+        <p><strong>Topic:</strong> @fetchedStudent.Topic</p>
+        <p><strong>Semester:</strong> @fetchedStudent.Semester</p>
+        <p><strong>Relation:</strong> @fetchedStudent.Relation</p>
+        <p><strong>Raised Hands:</strong> @fetchedStudent.Raisedhands</p>
+        <p><strong>Visited Resources:</strong> @fetchedStudent.VisItedResources</p>
+        <p><strong>Announcements View:</strong> @fetchedStudent.AnnouncementsView</p>
+        <p><strong>Discussion:</strong> @fetchedStudent.Discussion</p>
+        <p><strong>Parent Answering Survey:</strong> @fetchedStudent.ParentAnsweringSurvey</p>
+        <p><strong>Parent School Satisfaction:</strong> @fetchedStudent.ParentschoolSatisfaction</p>
+        <p><strong>Student Absence Days:</strong> @fetchedStudent.StudentAbsenceDays</p>
+        <p><strong>Student Marks:</strong> @fetchedStudent.Student_Marks</p>
+        <p><strong>Class:</strong> @fetchedStudent.Class</p>
+    }
+</div>
+
+@code {
+    private Student student = new Student();
+    private Student fetchedStudent;
+
+   // private bool successPopupVisible = false;
+    private string successMessage = "";
+
+    private bool failurePopupVisible = false;
+    private string failureMessage = "";
+
+    // private ElementReference successPopup;
+    private ElementReference failurePopup;
+
+    private async Task GetStudent()
+    {
+        try
+        {
+            var response = await HttpClient.GetAsync($"/api/Student/{student.Student_ID}");
+
+            if (response.IsSuccessStatusCode)
+            {
+                fetchedStudent = await response.Content.ReadFromJsonAsync<Student>();
+            }
+            else
+            {
+                // Handle error cases, show an error message
+                failureMessage = "Student Not Available!!";
+                failurePopupVisible = true;
+                fetchedStudent = null;
+            }
+        }
+        catch (Exception ex)
+        {
+            // Handle exception, show an error message
+            failureMessage = "Student Not Available!!";
+            failurePopupVisible = true;
+        }
+    }
+
+
+    private void GoBack()
+    {
+        // Navigate back to the home page
+        NavigationManager.NavigateTo("/");
+    }
+
+    // private void CloseSuccessPopup()
+    // {
+    //     successPopupVisible = false;
+    // }
+
+    private void CloseFailurePopup()
+    {
+        failurePopupVisible = false;
+    }
+}

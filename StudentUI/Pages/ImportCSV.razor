@@ -1,0 +1,126 @@
+﻿@page "/importcsv"
+@inject HttpClient HttpClient
+@using Microsoft.AspNetCore.Components.Web
+
+<h3>Import CSV Data</h3>
+
+<InputFile OnChange="HandleFileUpload" />
+
+
+<div class="popup @(successPopupVisible ? "open-popup" : "")" @ref="successPopup">
+    <h2 id="successMessage">@successMessage</h2>
+    <button type="button" @onclick="CloseSuccessPopup">Ok</button>
+</div> 
+
+<!-- Modal for Failure -->
+<div class="popup @(failurePopupVisible ? "open-popup" : "")" @ref="failurePopup">
+    <h2 id="failureMessage">@failureMessage</h2>
+    <button type="button" @onclick="CloseFailurePopup">Ok</button>
+</div>
+
+@if (imported)
+{
+
+    successMessage = "CSV file imported SUccessfully";
+    successPopupVisible = true;
+}
+else
+{
+    failureMessage = "Error in importing file";
+    failurePopupVisible = true;
+}
+
+@code {
+
+    private bool successPopupVisible = false;
+    private string successMessage = "";
+
+    private bool failurePopupVisible = false;
+    private string failureMessage = "";
+
+    private ElementReference successPopup;
+    private ElementReference failurePopup;
+    private bool imported = false;
+
+    private async Task HandleFileUpload(InputFileChangeEventArgs e)
+    {
+        var file = e.File;
+
+        if (file != null)
+        {
+            var stream = file.OpenReadStream();
+            var csvData = await new StreamReader(stream).ReadToEndAsync();
+
+            // You can send the csvData to the server using an API endpoint
+            // For simplicity, let's assume you have an API method named ImportCsvData
+
+            // Call the API to import CSV data
+            var response = await HttpClient.PostAsync("api/Student/ImportCsv", new StringContent(csvData));
+
+            if (response.IsSuccessStatusCode)
+            {
+                imported = true;
+                successMessage = "File imported Successfully";
+                successPopupVisible = true;
+                
+            }
+           
+        }
+    }
+
+    private void CloseSuccessPopup()
+    {
+        successPopupVisible = false;
+    }
+
+    private void CloseFailurePopup()
+    {
+        failurePopupVisible = false;
+    }
+}
+
+<style>
+    .popup {
+        width: 400px;
+        background: #ccc;
+        border-radius: 6px;
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translate(-50%, -50%) scale(0.1);
+        text-align: center;
+        padding: 0 30px 30px;
+        color: black;
+        visibility: hidden;
+        transition: transform 0.4s, top 0.4s;
+    }
+
+    .open-popup {
+        visibility: visible;
+        top: 50%;
+        transform: translate(-50%, -50%) scale(1);
+    }
+
+
+    .popup h2 {
+        font-size: 25px;
+        font-weight: 500;
+        margin: 30px 0 10px;
+        color: black;
+        font-family: 'Guatemala BoldItalic';
+    }
+
+    .popup button {
+        width: 100%;
+        margin-top: 50px;
+        padding: 10px 0;
+        background: blue;
+        color: #fff;
+        border: 0;
+        outline: none;
+        font-size: 18px;
+        border-radius: 4px;
+        cursor: pointer;
+        box-shadow: 0 5px 5px rgba(0, 0, 0, 0.2);
+    }
+</style>

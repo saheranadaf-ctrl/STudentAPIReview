@@ -1,0 +1,290 @@
+﻿@page "/bin"
+@inject HttpClient HttpClient
+@using System.Net.Http.Json
+@using System.Threading.Tasks
+@inject ILogger<Bin> Logger
+@using Microsoft.AspNetCore.Components.Web
+
+<!-- Heading -->
+<h1>Deleted Students</h1>
+
+<!-- Display deleted student IDs as a list -->
+<ul>
+    @foreach (var deletedStudentId in deletedStudentIds)
+    {
+        <li>@deletedStudentId</li>
+    }
+</ul>
+
+
+@* RecycleBin Operation Page *@
+<div class="container">
+    <button type="button" @onclick="RestoreSinglePopup">Restore Single</button>
+    <button type="button" @onclick="RestoreAll">Restore All</button>
+    <button type="button" @onclick="DeleteSinglePopup">Delete Permanently</button>
+</div>
+
+@* Restore Single Student *@
+<div class="popup @(restoreSinglePopupVisible ? "open-popup" : "")" @ref="restoreSinglePopup">
+    <EditForm Model="std" OnValidSubmit="RestoreSingle" class="restoreModal">
+        <br>
+        <label id="login" for="StudentId" style="color: black"><b>Enter Student Id To Restore</b></label>
+        <InputText @bind-Value="std.Student_ID" placeholder="Enter Student Id" class="form-control" required />
+        <ValidationMessage For="@(() => std.Student_ID)" />
+        <button type="submit" class="btn btn-primary">Restore Student</button>
+        <button type="submit" @onclick="CloseRestoreSinglePopup" id="Cancle">Cancle</button>
+    </EditForm>
+</div>
+
+@* Delete Single Student *@
+<div class="popup @(deleteSinglePopupVisible ? "open-popup" : "")" @ref="deleteSinglePopup">
+    <EditForm Model="std" OnValidSubmit="DeleteSingle" class="deleteModal">
+        <br>
+        <label id="login" for="StudentId" style="color: black"><b>Enter Student Id To Delete</b></label>
+        <InputText @bind-Value="std.Student_ID" placeholder="Enter Student Id" class="form-control" required />
+        <ValidationMessage For="@(() => std.Student_ID)" />
+        <button type="submit" class="btn btn-primary">Delete Student</button><br>
+        <button type="submit" @onclick="CloseDeleteSinglePopup" id="Cancle">Cancle</button><br>
+    </EditForm>
+</div>
+
+<!-- Modal for Success -->
+<div class="popup @(successPopupVisible ? "open-popup" : "")" @ref="successPopup">
+    <h2 id="successMessage">@successMessage</h2>
+    <button type="button" @onclick="CloseSuccessPopup">Ok</button>
+</div>
+
+<!-- Modal for Failure -->
+<div class="popup @(failurePopupVisible ? "open-popup" : "")" @ref="failurePopup">
+    <h2 id="failureMessage">@failureMessage</h2>
+    <button type="button" @onclick="CloseFailurePopup">Ok</button>
+</div>
+
+@code {
+
+    private List<string> deletedStudentIds = new List<string>();
+
+
+    private Student std = new Student();
+    private bool restoreSinglePopupVisible = false;
+    private bool deleteSinglePopupVisible = false;
+    private bool successPopupVisible = false;
+    private bool failurePopupVisible = false;
+
+    private string successMessage = "";
+
+    private string failureMessage = "";
+
+    private ElementReference successPopup;
+    private ElementReference failurePopup;
+    private ElementReference restoreSinglePopup;
+    private ElementReference deleteSinglePopup;
+
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        // Fetch deleted student IDs when the component initializes
+        deletedStudentIds = await FetchDeletedStudentIds();
+    }
+
+    private async Task<List<string>> FetchDeletedStudentIds()
+    {
+        List<string> deletedIds = new List<string>();
+
+        try
+        {
+            // Call the API endpoint to fetch the list of deleted student IDs
+            HttpResponseMessage response = await HttpClient.GetAsync("/api/Student/GetDeletedStudentIds");
+
+            if (response.IsSuccessStatusCode)
+            {
+                // Parse the API response to get the list of deleted student IDs
+                deletedIds = await response.Content.ReadFromJsonAsync<List<string>>();
+            }
+            else
+            {
+                // Handle error response from the API if needed
+                Logger.LogError($"Failed to fetch deleted student IDs. Status code: {response.StatusCode}");
+
+                // Show error modal
+                failureMessage = "Failed to fetch deleted student IDs. Please try again.";
+                failurePopupVisible = true;
+            }
+        }
+        catch (Exception ex)
+        {
+            // Handle exceptions if the API call fails
+            Logger.LogError($"Failed to fetch deleted student IDs: {ex.Message}");
+
+            // Show error modal
+            failureMessage = "An error occurred while fetching deleted student IDs. Please try again later.";
+            failurePopupVisible = true;
+        }
+
+        return deletedIds;
+    }
+
+    //Restore PopUp Will Be visible to take Student Id To restore
+    private async Task RestoreSinglePopup()
+    {
+        restoreSinglePopupVisible = true;
+    }
+
+    //Delete PopUp Will Be visible to take Student Id To delete
+    private async Task DeleteSinglePopup()
+    {
+        deleteSinglePopupVisible = true;
+    }
+
+    //Restoring Single Student from Bin
+    private async Task RestoreSingle()
+    {
+        restoreSinglePopupVisible = false;
+
+        if (!string.IsNullOrWhiteSpace(std.Student_ID))
+        {
+            try
+            {
+               
+
+                var content = new StringContent("");
+
+                var request = new HttpRequestMessage
+                    {
+                        Method = new HttpMethod("POST"),
+                        RequestUri = new Uri($"https://localhost:7205/api/Student/Restore?studentId={std.Student_ID}"),
+                        Content = content
+                    };
+
+                var response = await HttpClient.SendAsync(request);
+                @* Console.WriteLine("Deleted"); *@
+
+                if (response.IsSuccessStatusCode)
+                {
+                    // Single Student Restored
+                    successMessage = "Student Restored!!";
+                    successPopupVisible = true;
+                }
+                else
+                {
+                    // Failed To Restore Student
+                    failureMessage = "Failed To Restore Student";
+                    failurePopupVisible = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                // Handle exceptions
+                failureMessage = $"Error: {ex.Message}";
+                failurePopupVisible = true;
+            }
+        }
+        else
+        {
+            failureMessage = "Student Id is required.";
+            failurePopupVisible = true;
+        }
+    }
+
+    //Restoring All Student from Bin
+    private async Task RestoreAll()
+    {
+        @* binPopupVisible = false; *@
+
+        try
+        {
+            Console.WriteLine("Not Yet Deleted");
+            @* var response = await Http.DeleteAsync($"Student/RestoreAll"); *@
+
+            var content = new StringContent("");
+
+            var request = new HttpRequestMessage
+                {
+                    Method = new HttpMethod("POST"),
+                    RequestUri = new Uri($"https://localhost:7205/api/Student/RestoreAll"),
+                    Content = content
+                };
+
+            var response = await HttpClient.SendAsync(request);
+            Console.WriteLine("Deleted");
+
+            if (response.IsSuccessStatusCode)
+            {
+                // All Students Restored
+                successMessage = "All Students Restored!!";
+                successPopupVisible = true;
+            }
+            else
+            {
+                // Failed To Restore Students
+                failureMessage = "Failed To Restore All Students";
+                failurePopupVisible = true;
+            }
+        }
+        catch (Exception ex)
+        {
+            // Handle exceptions
+            failureMessage = $"Error: {ex.Message}";
+            failurePopupVisible = true;
+        }
+    }
+
+    private async Task DeleteSingle()
+    {
+        deleteSinglePopupVisible = false;
+
+        if (!string.IsNullOrWhiteSpace(std.Student_ID))
+        {
+            try
+            {
+                Console.WriteLine("Deleted1");
+                var response = await HttpClient.DeleteAsync($"/api/Student/{std.Student_ID}");
+                Console.WriteLine("Deleted2");
+
+                if (response.IsSuccessStatusCode)
+                {
+                    // Student deletion was successful
+                    successMessage = "Student Deleted Permanently!!";
+                    successPopupVisible = true;
+                }
+                else
+                {
+                    // Student deletion failed
+                    failureMessage = "Failed to delete the student.";
+                    failurePopupVisible = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                // Handle exceptions
+                failureMessage = $"Error: {ex.Message}";
+                failurePopupVisible = true;
+            }
+        }
+        else
+        {
+            failureMessage = "Student Id is required.";
+            failurePopupVisible = true;
+        }
+    }
+
+    private void CloseSuccessPopup()
+    {
+        successPopupVisible = false;
+    }
+
+    private void CloseFailurePopup()
+    {
+        failurePopupVisible = false;
+    }
+    private void CloseRestoreSinglePopup()
+    {
+        restoreSinglePopupVisible = false;
+    }
+
+    private void CloseDeleteSinglePopup()
+    {
+        deleteSinglePopupVisible = false;
+    }
+}

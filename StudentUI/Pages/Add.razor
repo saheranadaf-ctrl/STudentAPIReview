@@ -1,0 +1,199 @@
+﻿@page "/addstudent"
+@inject HttpClient HttpClient
+@inject IJSRuntime JSRuntime
+@inject ILogger<Add> Logger
+@using System.Net
+
+
+<EditForm Model="UpdatedStudent" OnValidSubmit="AddStudentAsync">
+    <label for="StudentId"><b>Student ID</b></label>
+    <InputText id="StudentId" @bind-Value="UpdatedStudent.Student_ID" placeholder="STDN00000" required pattern="^STDN\d{5}$" />
+    <ValidationMessage For="@(() => UpdatedStudent.Student_ID)" />
+
+    <label for="Gender"><b>Gender</b></label>
+    <InputText id="Gender" @bind-Value="UpdatedStudent.Gender" placeholder="M/F" required pattern="^[MF]$" />
+    <ValidationMessage For="@(() => UpdatedStudent.Gender)" />
+
+    <label for="NationalIty"><b>Nationality</b></label>
+    <InputText id="NationalIty" @bind-Value="UpdatedStudent.NationalIty" placeholder="Alphabet & space only" required pattern="^[a-zA-Z ]+$" />
+    <ValidationMessage For="@(() => UpdatedStudent.NationalIty)" />
+
+    <label for="PlaceofBirth"><b>Place Of Birth</b></label>
+    <InputText id="PlaceofBirth" @bind-Value="UpdatedStudent.PlaceofBirth" placeholder="Alphabet & space only" required pattern="^[a-zA-Z ]+$" />
+    <ValidationMessage For="@(() => UpdatedStudent.PlaceofBirth)" />
+
+    <label for="StageId"><b>Stage Id</b></label>
+    <InputText id="StageId" @bind-Value="UpdatedStudent.StageId" placeholder="LowerLevel/MiddleLevel/HigherLevel" required pattern="^(LowerLevel|MiddleLevel|HigherLevel)$" />
+    <ValidationMessage For="@(() => UpdatedStudent.StageId)" />
+
+    <label for="GradeId"><b>Grade Id</b></label>
+    <InputText id="GradeId" @bind-Value="UpdatedStudent.GradeId" placeholder="G-00" required pattern="^G-\d{2}$" />
+    <ValidationMessage For="@(() => UpdatedStudent.GradeId)" />
+
+    <label for="SectionId"><b>Section Id</b></label>
+    <InputText id="SectionId" @bind-Value="UpdatedStudent.SectionId" placeholder="A/B/C" required pattern="^[A-C]$" />
+    <ValidationMessage For="@(() => UpdatedStudent.SectionId)" />
+
+    <label for="Topic"><b>Topic</b></label>
+    <InputText id="Topic" @bind-Value="UpdatedStudent.Topic" placeholder="Alphabet only" required maxlength="10" pattern="^[a-zA-Z]+$" />
+    <ValidationMessage For="@(() => UpdatedStudent.Topic)" />
+
+    <label for="Semester"><b>Semester</b></label>
+    <InputText id="Semester" @bind-Value="UpdatedStudent.Semester" placeholder="A-H" required pattern="^[A-H]$" />
+    <ValidationMessage For="@(() => UpdatedStudent.Semester)" />
+
+    <label for="Relation"><b>Relation</b></label>
+    <InputText id="Relation" @bind-Value="UpdatedStudent.Relation" placeholder="Father/Mother" required pattern="^(Father|Mother)$" />
+    <ValidationMessage For="@(() => UpdatedStudent.Relation)" />
+
+    <label for="Raisedhands"><b>Raised Hands</b></label>
+    <InputNumber id="Raisedhands" @bind-Value="UpdatedStudent.Raisedhands" placeholder="0-999" required pattern="^(?:\d{1,3}|999)$" />
+    <ValidationMessage For="@(() => UpdatedStudent.Raisedhands)" />
+
+    <label for="VisitedResources"><b>Visited Resources</b></label>
+    <InputNumber id="VisitedResources" @bind-Value="UpdatedStudent.VisItedResources" placeholder="0-999" required pattern="^(?:\d{1,3}|999)$" />
+    <ValidationMessage For="@(() => UpdatedStudent.VisItedResources)" />
+
+    <label for="AnnouncementsView"><b>Announcements View</b></label>
+    <InputNumber id="AnnouncementsView" @bind-Value="UpdatedStudent.AnnouncementsView" placeholder="0-999" required pattern="^(?:\d{1,3}|999)$" />
+    <ValidationMessage For="@(() => UpdatedStudent.AnnouncementsView)" />
+
+    <label for="Discussion"><b>Discussion</b></label>
+    <InputNumber id="Discussion" @bind-Value="UpdatedStudent.Discussion" placeholder="0-999" required pattern="^(?:\d{1,3}|999)$" />
+    <ValidationMessage For="@(() => UpdatedStudent.Discussion)" />
+
+    <label for="ParentAnsweringSurvey"><b>Parent Answering Survey</b></label>
+    <InputText id="ParentAnsweringSurvey" @bind-Value="UpdatedStudent.ParentAnsweringSurvey" placeholder="Yes/No" required pattern="^(Yes|No)$" />
+    <ValidationMessage For="@(() => UpdatedStudent.ParentAnsweringSurvey)" />
+
+    <label for="ParentschoolSatisfaction"><b>Parent School Satisfaction</b></label>
+    <InputText id="ParentschoolSatisfaction" @bind-Value="UpdatedStudent.ParentschoolSatisfaction" placeholder="Good/Bad" required pattern="^(Good|Bad)$" />
+    <ValidationMessage For="@(() => UpdatedStudent.ParentschoolSatisfaction)" />
+
+    <label for="StudentAbsenceDays"><b>Student Absence Days</b></label>
+    <InputText id="StudentAbsenceDays" @bind-Value="UpdatedStudent.StudentAbsenceDays" placeholder="Under-7/Above-7" required pattern="^(Under-7|Above-7)$" />
+    <ValidationMessage For="@(() => UpdatedStudent.StudentAbsenceDays)" />
+
+    <label for="Student_Marks"><b>Student Marks</b></label>
+    <InputNumber id="Student_Marks" @bind-Value="UpdatedStudent.Student_Marks" placeholder="0-100" required pattern="^(?:\d{1,3}|100)$" />
+    <ValidationMessage For="@(() => UpdatedStudent.Student_Marks)" />
+
+    <label for="Class"><b>Class</b></label>
+    <InputText id="Class" @bind-Value="UpdatedStudent.Class" placeholder="M/L/H" required pattern="^[MLH]$" />
+    <ValidationMessage For="@(() => UpdatedStudent.Class)" />
+
+    <button type="submit">Save Student Details</button>
+</EditForm>
+
+
+@code {
+    private Student UpdatedStudent { get; set; } = new Student();
+    private bool successModalVisible = false;
+    private bool errorModalVisible = false;
+    private string errorMessage = string.Empty;
+
+    private async Task AddStudentAsync()
+    {
+        try
+        {
+            HttpResponseMessage response = await HttpClient.PostAsJsonAsync("/api/Student", UpdatedStudent);
+
+            if (response.IsSuccessStatusCode)
+            {
+                ShowSuccessModal();
+            }
+            else if (response.StatusCode == System.Net.HttpStatusCode.BadRequest)
+            {
+                errorMessage = "Student ID already exists.";
+                ShowErrorModal();
+            }
+            else
+            {
+                string errorMessage = await response.Content.ReadAsStringAsync();
+                Logger.LogError($"Failed to add student. Status code: {response.StatusCode}. Error message: {errorMessage}");
+                ShowErrorModal();
+            }
+        }
+        catch (HttpRequestException ex)
+        {
+            Logger.LogError($"HTTP request error: {ex.Message}");
+            ShowErrorModal();
+        }
+        catch (Exception ex)
+        {
+            Logger.LogError($"An error occurred: {ex.Message}");
+            ShowErrorModal();
+        }
+    }
+
+
+    private void ShowSuccessModal()
+    {
+        successModalVisible = true;
+    }
+
+    private void ShowErrorModal()
+    {
+        errorModalVisible = true;
+    }
+
+    private void CloseModals()
+    {
+        successModalVisible = false;
+        errorModalVisible = false;
+    }
+
+}
+
+
+<!-- Success Modal -->
+@if (successModalVisible)
+{
+    <div class="modal">
+        <div class="modal-content">
+            <span class="close" @onclick="CloseModals">&times;</span>
+            <h2>Success!</h2>
+            <p>Student added successfully, thank you!</p>
+        </div>
+    </div>
+}
+
+<!-- Error Modal -->
+@if (errorModalVisible)
+{
+    <div class="modal">
+        <div class="modal-content">
+            <span class="close" @onclick="CloseModals">&times;</span>
+            <h2>Error!</h2>
+            <p>Student ID already exists</p>
+        </div>
+    </div>
+}
+
+
+@code {
+    private bool show = false;
+
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+
+    public void Show()
+    {
+        show = true;
+        StateHasChanged();
+    }
+
+    public async Task ShowAsync()
+    {
+        Show();
+        await Task.Delay(3000); // Display modal for 3 seconds (adjust as needed)
+        CloseModal();
+    }
+
+    private void CloseModal()
+    {
+        show = false;
+        StateHasChanged();
+    }
+}
+

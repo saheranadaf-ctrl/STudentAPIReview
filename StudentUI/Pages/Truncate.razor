@@ -1,0 +1,39 @@
+﻿@page "/truncate-student"
+@inject HttpClient HttpClient
+
+
+
+<h3>Truncate Student Table</h3>
+
+<p>Click the button below to truncate the Student table.</p>
+
+<button @onclick="TruncateStudentTable">Truncate Table</button>
+
+<p>@message</p>
+
+@code {
+    private string message = string.Empty;
+
+    private async Task TruncateStudentTable()
+    {
+        try
+        {
+            // Call the API endpoint to truncate the Student table
+            var response = await HttpClient.PostAsync("api/Student/truncate", null);
+
+            if (response.IsSuccessStatusCode)
+            {
+                message = "Student table truncated successfully.";
+            }
+            else
+            {
+                message = "Failed to truncate the Student table. Please try again later.";
+            }
+        }
+        catch (Exception ex)
+        {
+            message = "An error occurred: " + ex.Message;
+        }
+    }
+}
+

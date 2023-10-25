@@ -1,0 +1,111 @@
+﻿@page "/home"
+@inject NavigationManager NavigationManager
+<style>
+    /* Home.razor.css */
+    /* Home.razor.css */
+
+    body {
+        background-image: url('Background.jpg');
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-size: cover;
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f5f5f5;
+    }
+
+    .button-container {
+        display: flex;
+        margin-bottom: 20px;
+    }
+
+    .container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 50px 20px;
+        text-align: center;
+    }
+
+    h1 {
+        margin-bottom: 30px;
+        font-size: 36px;
+        color: white;
+    }
+
+    .buttons {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .green-button {
+        margin: 10px;
+        padding: 15px 30px;
+        font-size: 16px;
+        background-color: rgb(51, 154, 48);
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+        .green-button:hover {
+            background-color: black;
+        }
+
+    .help-link {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+    }
+
+        .help-link a {
+            color: cadetblue;
+            text-decoration: none;
+        }
+
+</style>
+
+<h3>Welcome to Home Page</h3>
+
+<div class="button-container">
+    <button class="green-button" @onclick="NavigateToAddStudent">Add Student</button>
+    <button class="green-button" @onclick="NavigateToUpdateStudent">Update Student</button>
+    <button class="green-button" @onclick="NavigateToGetAllStudents">Get All Students</button>
+    <button class="green-button" @onclick="NavigateToGetStudentById">Get Student by ID</button>
+    <button class="green-button" @onclick="NavigateToDeleteStudent">Delete Student</button>
+</div>
+
+<div class="help-link">
+    <a href="#">Need Help</a>
+</div>
+
+@code {
+    private void NavigateToAddStudent()
+    {
+        NavigationManager.NavigateTo("/addstudent");
+    }
+
+    private void NavigateToUpdateStudent()
+    {
+        NavigationManager.NavigateTo("/updatestudent");
+    }
+
+    private void NavigateToGetAllStudents()
+    {
+        NavigationManager.NavigateTo("/getallstudents");
+    }
+
+    private void NavigateToGetStudentById()
+    {
+        NavigationManager.NavigateTo("/getstudentbyid");
+    }
+
+    private void NavigateToDeleteStudent()
+    {
+        NavigationManager.NavigateTo("/deletestudent");
+    }
+}
+

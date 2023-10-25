@@ -1,0 +1,86 @@
+﻿@page "/getallstudents"
+@inject HttpClient HttpClient
+@inject IJSRuntime JSRuntime
+@inject NavigationManager NavigationManager
+
+<h1>All Students</h1>
+
+<!-- Button to fetch and display all students -->
+<button class="btn btn-primary" @onclick="GetAllStudents">Get All Students</button>
+<button class="btn btn-secondary" @onclick="GoBack">Back</button>
+
+<!-- Display Students List in Table Format -->
+@if (students != null && students.Any())
+{
+    <table class="table">
+        <thead>
+            <tr>
+                @foreach (var header in tableHeaders)
+                {
+                    <th>@header</th>
+                }
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var student in students)
+            {
+                <tr>
+                    @foreach (var header in tableHeaders)
+                    {
+                        <td>@student[header]</td>
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else if (students != null && !students.Any())
+{
+    <p>No students found.</p>
+}
+
+@code {
+    private List<Dictionary<string, object>> students;
+    private List<string> tableHeaders;
+
+    internal async Task GetAllStudents()
+    {
+        try
+        {
+            // Fetch data from API
+            var response = await HttpClient.GetAsync("/api/Student/GetAll");
+
+            // Check if the response is successful
+            if (response.IsSuccessStatusCode)
+            {
+                students = await response.Content.ReadFromJsonAsync<List<Dictionary<string, object>>>();
+
+                // Get table headers dynamically based on the first student's properties
+                if (students != null && students.Any())
+                {
+                    var firstStudent = students.First();
+                    tableHeaders = firstStudent.Keys.ToList();
+                }
+            }
+            else
+            {
+                // Handle error cases, show an error message
+                students = null;
+                // Handle errors here
+            }
+        }
+        catch (Exception ex)
+        {
+            // Handle exception, show an error message
+            students = null;
+            // Handle exceptions here
+        }
+    }
+
+    private void GoBack()
+    {
+        // Navigate back to the home page
+        NavigationManager.NavigateTo("/");
+    }
+}
+

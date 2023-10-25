@@ -1,0 +1,113 @@
+﻿h3 {
+    color: blueviolet;
+}
+
+#login {
+    color: red;
+}
+
+input[type=text],
+input[type=number],
+input[type=hidden] {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+button {
+    background-color: #04AA6D;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: 2px solid black;
+    border-radius: 10px;
+    cursor: pointer;
+    width: 15%;
+}
+
+input:hover {
+    box-shadow: 0 0 2px 2px blue;
+    color: red;
+}
+
+button:hover {
+    opacity: 1;
+    background-color: #f44336;
+}
+
+/* .container {
+    padding: 16px;
+} */
+
+.error {
+    color: red;
+    font-size: 14px;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+th,
+td {
+    border: 2px solid red;
+    border-radius: 2px;
+    padding: 8px;
+    text-align: center;
+}
+
+.popup {
+    width: 400px;
+    background: #0b0b0b;
+    border-radius: 6px;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.1);
+    text-align: center;
+    padding: 0 30px 30px;
+    color: #333;
+    visibility: hidden;
+    transition: transform 0.4s, top 0.4s;
+}
+
+.open-popup {
+    visibility: visible;
+    top: 50%;
+    transform: translate(-50%, -50%) scale(1);
+}
+
+
+.popup img {
+    width: 100px;
+    margin-top: -50px;
+    border-radius: 50%;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.popup h2 {
+    font-size: 25px;
+    font-weight: 500;
+    margin: 30px 0 10px;
+    color: #ffffff;
+    font-family: cursive;
+}
+
+.popup button {
+    width: 100%;
+    margin-top: 50px;
+    padding: 10px 0;
+    background: #b35212;
+    color: #fff;
+    border: 0;
+    outline: none;
+    font-size: 18px;
+    border-radius: 4px;
+    cursor: pointer;
+    box-shadow: 0 5px 5px rgba(0, 0, 0, 0.2);
+}

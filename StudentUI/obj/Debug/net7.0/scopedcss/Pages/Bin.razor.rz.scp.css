@@ -1,0 +1,141 @@
+/* Bin Page Styles */
+
+/* Heading Styles */
+h1[b-ur23hq1m0u] {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: blueviolet;
+}
+
+/* List Styles */
+ul[b-ur23hq1m0u] {
+    list-style: none;
+    padding: 0;
+}
+
+li[b-ur23hq1m0u] {
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+/* Button Styles */
+
+
+
+
+#login[b-ur23hq1m0u] {
+    color: red;
+}
+
+input[type=text][b-ur23hq1m0u],
+input[type=number][b-ur23hq1m0u],
+input[type=hidden][b-ur23hq1m0u] {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+button[b-ur23hq1m0u] {
+    background-color: #04AA6D;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: 2px solid black;
+    border-radius: 10px;
+    cursor: pointer;
+    width: 15%;
+}
+
+input:hover[b-ur23hq1m0u] {
+    box-shadow: 0 0 2px 2px blue;
+    color: red;
+}
+
+button:hover[b-ur23hq1m0u] {
+    opacity: 1;
+    background-color: #f44336;
+}
+
+.error[b-ur23hq1m0u] {
+    color: red;
+    font-size: 14px;
+}
+
+table[b-ur23hq1m0u] {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+th[b-ur23hq1m0u],
+td[b-ur23hq1m0u] {
+    border: 2px solid red;
+    border-radius: 2px;
+    padding: 8px;
+    text-align: center;
+}
+
+.popup[b-ur23hq1m0u] {
+    width: 400px;
+    background: #ccc;
+    border-radius: 6px;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.1);
+    text-align: center;
+    padding: 0 30px 30px;
+    color: black;
+    visibility: hidden;
+    transition: transform 0.4s, top 0.4s;
+}
+
+.open-popup[b-ur23hq1m0u] {
+    visibility: visible;
+    top: 50%;
+    transform: translate(-50%, -50%) scale(1);
+}
+
+
+.popup img[b-ur23hq1m0u] {
+    width: 100px;
+    margin-top: -50px;
+    border-radius: 50%;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.popup h2[b-ur23hq1m0u] {
+    font-size: 25px;
+    font-weight: 500;
+    margin: 30px 0 10px;
+    color: #ffffff;
+    font-family: cursive;
+}
+
+.popup button[b-ur23hq1m0u] {
+    width: 100%;
+    margin-top: 50px;
+    padding: 10px 0;
+    background: blue;
+    color: #fff;
+    border: 0;
+    outline: none;
+    font-size: 18px;
+    border-radius: 4px;
+    cursor: pointer;
+    box-shadow: 0 5px 5px rgba(0, 0, 0, 0.2);
+}
+
+    .popup button:hover[b-ur23hq1m0u] {
+        opacity: 1;
+        background-color: #f44336;
+    }
+
+#Cancle[b-ur23hq1m0u] {
+    background: white;
+    color: Red;
+}

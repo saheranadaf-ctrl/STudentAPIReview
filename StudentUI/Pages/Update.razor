@@ -1,0 +1,152 @@
+﻿@page "/updateStudent"
+@inject HttpClient httpClient
+@using System.Net.Http.Json
+@using System.Threading.Tasks
+@using Microsoft.AspNetCore.Components.Web
+
+<!-- Razor component content -->
+<div class="container">
+    <h3>Enter Student Details To Update</h3>
+
+    <EditForm Model="std" OnValidSubmit="UpdateStudentDetails">
+        <DataAnnotationsValidator />
+        <div class="form-group">
+            <label id="login" for="StudentId"><b>Student Id:</b></label>
+            <InputText id="StudentId" class="form-control" @bind-Value="std.Student_ID" /><br>
+            <ValidationMessage For="@(() => std.Student_ID)" />
+
+            <label id="login" for="Gender"><b>Gender:</b></label>
+            <InputText id="Gender" class="form-control" @bind-Value="std.Gender" /><br>
+            <ValidationMessage For="@(() => std.Gender)" />
+
+            <label id="login" for="NationalIty"><b>NationalIty:</b></label>
+            <InputText id="NationalIty" class="form-control" @bind-Value="std.NationalIty" /><br>
+            <ValidationMessage For="@(() => std.NationalIty)" />
+
+            <label id="login" for="PlaceofBirth"><b>Place Of Birth:</b></label>
+            <InputText id="PlaceofBirth" class="form-control" @bind-Value="std.PlaceofBirth" /><br>
+            <ValidationMessage For="@(() => std.PlaceofBirth)" />
+
+            <label id="login" for="StageId"><b>Stage Id:</b></label>
+            <InputText id="StageId" class="form-control" @bind-Value="std.StageId" /><br>
+            <ValidationMessage For="@(() => std.StageId)" />
+
+            <label id="login" for="GradeId"><b>Grade Id:</b></label>
+            <InputText id="GradeId" class="form-control" @bind-Value="std.GradeId" /><br>
+            <ValidationMessage For="@(() => std.GradeId)" />
+
+            <label id="login" for="SectionId"><b>Section Id:</b></label>
+            <InputText id="SectionId" class="form-control" @bind-Value="std.SectionId" /><br>
+            <ValidationMessage For="@(() => std.SectionId)" />
+
+            <label id="login" for="Topic"><b>Topic:</b></label>
+            <InputText id="Topic" class="form-control" @bind-Value="std.Topic" /><br>
+            <ValidationMessage For="@(() => std.Topic)" />
+
+            <label id="login" for="Semester"><b>Semester:</b></label>
+            <InputText id="Semester" class="form-control" @bind-Value="std.Semester" /><br>
+            <ValidationMessage For="@(() => std.Semester)" />
+
+            <label id="login" for="Relation"><b>Relation:</b></label>
+            <InputText id="Relation" class="form-control" @bind-Value="std.Relation" /><br>
+            <ValidationMessage For="@(() => std.Relation)" />
+
+            <label id="login" for="Raisedhands"><b>Raised hands:</b></label>
+            <InputNumber id="Raisedhands" class="form-control" @bind-Value="std.Raisedhands" /><br>
+            <ValidationMessage For="@(() => std.Raisedhands)" />
+
+            <label id="login" for="VisItedResources"><b>Visited Resources:</b></label>
+            <InputNumber id="VisItedResources" class="form-control" @bind-Value="std.VisItedResources" /><br>
+            <ValidationMessage For="@(() => std.VisItedResources)" />
+
+            <label id="login" for="AnnouncementsView"><b>Announcements View:</b></label>
+            <InputNumber id="AnnouncementsView" class="form-control" @bind-Value="std.AnnouncementsView" /><br>
+            <ValidationMessage For="@(() => std.AnnouncementsView)" />
+
+            <label id="login" for="Discussion"><b>Discussion:</b></label>
+            <InputNumber id="Discussion" class="form-control" @bind-Value="std.Discussion" /><br>
+            <ValidationMessage For="@(() => std.Discussion)" />
+
+            <label id="login" for="ParentAnsweringSurvey"><b>Parent Answering Survey:</b></label>
+            <InputText id="ParentAnsweringSurvey" class="form-control" @bind-Value="std.ParentAnsweringSurvey" /><br>
+            <ValidationMessage For="@(() => std.ParentAnsweringSurvey)" />
+
+            <label id="login" for="ParentschoolSatisfaction"><b>Parent School Satisfaction:</b></label>
+            <InputText id="ParentschoolSatisfaction" class="form-control" @bind-Value="std.ParentschoolSatisfaction" />
+            <br>
+            <ValidationMessage For="@(() => std.ParentschoolSatisfaction)" />
+
+            <label id="login" for="StudentAbsenceDays"><b>Student Absence Days:</b></label>
+            <InputText id="StudentAbsenceDays" class="form-control" @bind-Value="std.StudentAbsenceDays" /><br>
+            <ValidationMessage For="@(() => std.StudentAbsenceDays)" />
+
+            <label id="login" for="StudentMarks"><b>Student Marks:</b></label>
+            <InputNumber id="StudentMarks" class="form-control" @bind-Value="std.Student_Marks" /><br>
+            <ValidationMessage For="@(() => std.Student_Marks)" />
+
+            <label id="login" for="Class"><b>Class:</b></label>
+            <InputText id="StudentMarks" class="form-control" @bind-Value="std.Class" /><br>
+            <ValidationMessage For="@(() => std.Class)" />
+        </div>
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary">Update Student Details</button>
+        </div>
+    </EditForm>
+</div>
+
+<!-- Modal for Success -->
+<div class="popup @(successPopupVisible ? "open-popup" : "")" @ref="successPopup">
+    <h2 id="successMessage">@successMessage</h2>
+    <button type="button" @onclick="CloseSuccessPopup">Ok</button>
+</div>
+
+<!-- Modal for Failure -->
+<div class="popup @(failurePopupVisible ? "open-popup" : "")" @ref="failurePopup">
+    <h2 id="failureMessage">@failureMessage</h2>
+    <button type="button" @onclick="CloseFailurePopup">Ok</button>
+</div>
+
+@code {
+    private Student std = new Student();
+    private bool successPopupVisible = false;
+    private string successMessage = "";
+
+    private bool failurePopupVisible = false;
+    private string failureMessage = "";
+
+    private ElementReference successPopup;
+    private ElementReference failurePopup;
+    private async Task UpdateStudentDetails()
+    {
+        try
+        {
+            var response = await httpClient.PutAsJsonAsync($"Student/UpdateStudent?id={std.Student_ID}", std);
+
+            if (response.IsSuccessStatusCode)
+            {
+                successPopupVisible = true;
+                successMessage = "Student Details Updated Successfully!!";
+            }
+            else
+            {
+                failurePopupVisible = true;
+                failureMessage = "Student Details Was Not Updated!!";
+            }
+        }
+        catch (Exception e)
+        {
+            failurePopupVisible = true;
+            failureMessage = $"Error: {e.Message}";
+        }
+    }
+
+    private void CloseSuccessPopup()
+    {
+        successPopupVisible = false;
+    }
+
+    private void CloseFailurePopup()
+    {
+        failurePopupVisible = false;
+    }
+}
